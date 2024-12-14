@@ -15,21 +15,18 @@ func LaundryStart() {
 		outfits.BEING_CLEANED,
 	)
 	if numChanged <= 0 {
-		// If there are no laundry, schedule it next time
-		fmt.Printf("[%s] No Laundry, Scheduling Next Time\n", simulation.SimulationState.ReadableTime())
-		laundryStartTime := simulation.SimulationState.Hour + helper.NonNegativeIntNormalDistribution(
-			config.MEAN_HOUR_UNTIL_NEXT_LAUNDRY,
-			config.STD_HOUR_UNTIL_NEXT_LAUNDRY,
-		)
+		// If there are no laundry, schedule 5am tomorrow
+		fmt.Printf("[%s] No Laundry, Scheduling at 5 AM Tomorrow\n", simulation.SimulationState.ReadableTime())
+		laundryStartTime := getNextTimeAtHour(5)
 		simulation.Schedule(
 			LaundryStart,
 			laundryStartTime,
 		)
 	} else {
-		fmt.Printf("[%s] Doing Laundry\n", simulation.SimulationState.ReadableTime())
-		laundryEndTime := simulation.SimulationState.Hour + helper.NonNegativeIntNormalDistribution(
+		fmt.Printf("[%s] Doing Laundry for %d Outfits\n", simulation.SimulationState.ReadableTime(), numChanged)
+		laundryEndTime := simulation.SimulationState.Hour + helper.IntExponentialDistribution(
 			config.MEAN_LAUNDRY_DURATION_HOUR,
-			config.STD_LAUNDRY_DURATION_HOUR,
+			config.MIN_LAUNDRY_DURATION_HOUR,
 		)
 		simulation.Schedule(
 			LaundryEnd,
@@ -39,14 +36,14 @@ func LaundryStart() {
 }
 
 func LaundryEnd() {
-	fmt.Printf("[%s] Laundry Done\n", simulation.SimulationState.ReadableTime())
-	outfits.SetMultipleOutfitState(
+	numChanged := outfits.SetMultipleOutfitState(
 		simulation.SimulationState.AllOutfits.GetAllOutfitsWithState(outfits.BEING_CLEANED),
 		outfits.CLEAN,
 	)
-	laundryStartTime := simulation.SimulationState.Hour + helper.NonNegativeIntNormalDistribution(
+	fmt.Printf("[%s] Laundry Done for %d Outfits\n", simulation.SimulationState.ReadableTime(), numChanged)
+	laundryStartTime := simulation.SimulationState.Hour + helper.IntExponentialDistribution(
 		config.MEAN_HOUR_UNTIL_NEXT_LAUNDRY,
-		config.STD_HOUR_UNTIL_NEXT_LAUNDRY,
+		config.MIN_HOUR_UNTIL_NEXT_LAUNDRY,
 	)
 	simulation.Schedule(
 		LaundryStart,

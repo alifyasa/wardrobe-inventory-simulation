@@ -26,7 +26,7 @@ func Shower() {
 func GetNextShowerTime() int {
 	minNextShowerTime := math.MaxInt
 	for _, showerHour := range config.SHOWER_TIME {
-		nextShowerTime := getNextShowerTimeAtHour(showerHour)
+		nextShowerTime := getNextTimeAtHour(showerHour)
 		if nextShowerTime < minNextShowerTime {
 			minNextShowerTime = nextShowerTime
 		}
@@ -34,7 +34,7 @@ func GetNextShowerTime() int {
 	return minNextShowerTime
 }
 
-func getNextShowerTimeAtHour(hourOfDay int) int {
+func getNextTimeAtHour(hourOfDay int) int {
 	currentHourOfDay := simulation.SimulationState.Hour % constant.HOUR_IN_DAY
 	if currentHourOfDay == hourOfDay {
 		return simulation.SimulationState.Hour + constant.HOUR_IN_DAY
