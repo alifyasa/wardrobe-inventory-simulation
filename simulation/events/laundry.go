@@ -41,10 +41,7 @@ func LaundryEnd() {
 		outfits.CLEAN,
 	)
 	fmt.Printf("[%s] Laundry Done for %d Outfits\n", simulation.SimulationState.ReadableTime(), numChanged)
-	laundryStartTime := simulation.SimulationState.Hour + helper.IntExponentialDistribution(
-		config.MEAN_HOUR_UNTIL_NEXT_LAUNDRY,
-		config.MIN_HOUR_UNTIL_NEXT_LAUNDRY,
-	)
+	laundryStartTime := getNextTimeAtHour(5)
 	simulation.Schedule(
 		LaundryStart,
 		laundryStartTime,
