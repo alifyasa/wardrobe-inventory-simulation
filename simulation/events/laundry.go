@@ -1,6 +1,8 @@
 package events
 
 import (
+	"fmt"
+
 	"github.com/alifyasa/wardrobe-inventory-simulation/config"
 	"github.com/alifyasa/wardrobe-inventory-simulation/helper"
 	"github.com/alifyasa/wardrobe-inventory-simulation/outfits"
@@ -14,7 +16,8 @@ func LaundryStart() {
 	)
 	if numChanged <= 0 {
 		// If there are no laundry, schedule it next time
-		laundryStartTime := simulation.SimulationState.Hour + helper.IntNormalDistribution(
+		fmt.Printf("[%s] No Laundry, Scheduling Next Time\n", simulation.SimulationState.ReadableTime())
+		laundryStartTime := simulation.SimulationState.Hour + helper.NonNegativeIntNormalDistribution(
 			config.MEAN_HOUR_UNTIL_NEXT_LAUNDRY,
 			config.STD_HOUR_UNTIL_NEXT_LAUNDRY,
 		)
@@ -23,7 +26,8 @@ func LaundryStart() {
 			laundryStartTime,
 		)
 	} else {
-		laundryEndTime := simulation.SimulationState.Hour + helper.IntNormalDistribution(
+		fmt.Printf("[%s] Doing Laundry\n", simulation.SimulationState.ReadableTime())
+		laundryEndTime := simulation.SimulationState.Hour + helper.NonNegativeIntNormalDistribution(
 			config.MEAN_LAUNDRY_DURATION_HOUR,
 			config.STD_LAUNDRY_DURATION_HOUR,
 		)
@@ -35,11 +39,12 @@ func LaundryStart() {
 }
 
 func LaundryEnd() {
+	fmt.Printf("[%s] Laundry Done\n", simulation.SimulationState.ReadableTime())
 	outfits.SetMultipleOutfitState(
 		simulation.SimulationState.AllOutfits.GetAllOutfitsWithState(outfits.BEING_CLEANED),
 		outfits.CLEAN,
 	)
-	laundryStartTime := simulation.SimulationState.Hour + helper.IntNormalDistribution(
+	laundryStartTime := simulation.SimulationState.Hour + helper.NonNegativeIntNormalDistribution(
 		config.MEAN_HOUR_UNTIL_NEXT_LAUNDRY,
 		config.STD_HOUR_UNTIL_NEXT_LAUNDRY,
 	)

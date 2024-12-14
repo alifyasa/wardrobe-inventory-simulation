@@ -1,6 +1,7 @@
 package events
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/alifyasa/wardrobe-inventory-simulation/config"
@@ -10,6 +11,7 @@ import (
 )
 
 func Shower() {
+	fmt.Printf("[%s] Showered\n", simulation.SimulationState.ReadableTime())
 	outfits.SetMultipleOutfitState(
 		[]*outfits.Outfit{
 			simulation.SimulationState.CurrentOutfit,

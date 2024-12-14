@@ -2,6 +2,7 @@ package simulation
 
 import (
 	"container/heap"
+	"fmt"
 
 	"github.com/alifyasa/wardrobe-inventory-simulation/outfits"
 )
@@ -28,4 +29,10 @@ func (s *SimulationStateType) Push(e *Event) {
 
 func (s *SimulationStateType) Pop() *Event {
 	return heap.Pop(&s.eventQueue).(*Event)
+}
+
+func (s *SimulationStateType) ReadableTime() string {
+	hour := s.Hour % 24
+	day := (s.Hour - hour) / 24
+	return fmt.Sprintf("D%04d/H%02d", day, hour)
 }
