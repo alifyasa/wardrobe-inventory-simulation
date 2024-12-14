@@ -17,18 +17,19 @@ func (w *AllOutfits) GetCleanOutfit() *Outfit {
 	return &newOutfit
 }
 
-func (w *AllOutfits) GetAllDirtyOutfits() []*Outfit {
-	dirtyOutfits := make([]*Outfit, 0)
+func (w *AllOutfits) GetAllOutfitsWithState(state OutfitState) []*Outfit {
+	filteredOutfits := make([]*Outfit, 0)
 	for _, outfit := range w.Outfits {
-		if outfit.state == DIRTY {
-			dirtyOutfits = append(dirtyOutfits, outfit)
+		if outfit.state == state {
+			filteredOutfits = append(filteredOutfits, outfit)
 		}
 	}
-	return dirtyOutfits
+	return filteredOutfits
 }
 
-func (w *AllOutfits) SetMultipleOutfitState(outfits []*Outfit, state OutfitState) {
+func SetMultipleOutfitState(outfits []*Outfit, state OutfitState) int {
 	for _, outfit := range outfits {
 		outfit.state = state
 	}
+	return len(outfits)
 }
