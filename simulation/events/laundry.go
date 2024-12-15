@@ -25,6 +25,7 @@ func LaundryStart() {
 		laundryEndTime := simulation.SimulationState.Hour + helper.IntExponentialDistribution(
 			config.MEAN_LAUNDRY_DURATION_HOUR,
 			config.MIN_LAUNDRY_DURATION_HOUR,
+			config.MAX_LAUNDRY_DURATION_HOUR,
 		)
 		simulation.Schedule(
 			LaundryEnd,
