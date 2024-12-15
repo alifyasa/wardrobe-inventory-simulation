@@ -5,13 +5,12 @@ import (
 
 	"github.com/alifyasa/wardrobe-inventory-simulation/config"
 	"github.com/alifyasa/wardrobe-inventory-simulation/constant"
-	"github.com/alifyasa/wardrobe-inventory-simulation/logger"
 	"github.com/alifyasa/wardrobe-inventory-simulation/outfits"
 	"github.com/alifyasa/wardrobe-inventory-simulation/simulation"
 )
 
 func Shower() {
-	logger.Log("Showered")
+	simulation.Log("Showered")
 	outfits.SetMultipleOutfitState(
 		[]*outfits.Outfit{
 			simulation.SimulationState.CurrentOutfit,
