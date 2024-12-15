@@ -12,15 +12,16 @@ type SimulationStateType struct {
 	eventQueue    EventQueue
 	AllOutfits    *outfits.AllOutfits
 	CurrentOutfit *outfits.Outfit
+	Metrics       SimulationMetrics
 }
 
 var allOutfits = &outfits.AllOutfits{Outfits: make([]*outfits.Outfit, 0)}
-var eventQueue = make(EventQueue, 0)
 var SimulationState = &SimulationStateType{
 	0,
-	eventQueue,
+	make(EventQueue, 0),
 	allOutfits,
 	allOutfits.GetCleanOutfit(),
+	make(SimulationMetrics, 0),
 }
 
 func (s *SimulationStateType) Push(e *Event) {
@@ -29,6 +30,13 @@ func (s *SimulationStateType) Push(e *Event) {
 
 func (s *SimulationStateType) Pop() *Event {
 	return heap.Pop(&s.eventQueue).(*Event)
+}
+
+func (s *SimulationStateType) Peek() *Event {
+	if len(s.eventQueue) == 0 {
+		return nil
+	}
+	return s.eventQueue[0]
 }
 
 func (s *SimulationStateType) ReadableTime() string {

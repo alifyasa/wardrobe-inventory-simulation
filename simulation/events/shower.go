@@ -10,7 +10,7 @@ import (
 )
 
 func Shower() {
-	simulation.Log("Showered")
+	// simulation.Log("Showered")
 	outfits.SetMultipleOutfitState(
 		[]*outfits.Outfit{
 			simulation.SimulationState.CurrentOutfit,

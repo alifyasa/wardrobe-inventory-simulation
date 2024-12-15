@@ -1,6 +1,6 @@
 package config
 
-var SIMULATION_DURATION_HOUR = 60 * 365 * 24
+var SIMULATION_DURATION_HOUR = 40 * 365 * 24
 
 var SHOWER_TIME = []int{6, 17}
 
